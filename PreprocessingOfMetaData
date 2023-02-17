@@ -1,0 +1,75 @@
+from mpl_toolkits.mplot3d import Axes3D
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt # plotting
+import numpy as np # linear algebra
+import os # accessing directory structure
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+
+import math
+
+df1 = pd.read_csv('jsrt_metadata.csv', delimiter=',',na_values="")
+df1.dataframeName = 'jsrt_metadata.csv'
+nRow, nCol = df1.shape
+print(f'There are {nRow} rows and {nCol} columns')
+
+df1.head(5)
+
+D=df1['diagnosis'].unique()
+P=df1['position'].unique()
+S=df1['state'].unique()
+G=df1['gender'].unique()
+Age=df1['age'].unique()
+
+print(D)
+print(P)
+print(S)
+print(G)
+print(Age)
+
+df1['diagnosis'].isna()
+
+df1['diagnosis']=df1['diagnosis'].fillna(0)
+df1['position']=df1['position'].fillna(0)
+df1['state']=df1['state'].fillna(0)
+df1['size']=df1['size'].fillna(0)
+df1['subtlety']=df1['subtlety'].fillna(0)
+
+D=df1['diagnosis'].unique()
+P=df1['position'].unique()
+S=df1['state'].unique()
+G=df1['gender'].unique()
+
+print(D)
+print(P)
+print(S)
+print(G)
+
+df1['diagnosis'].isna()
+
+df1['age']=df1['age'].replace('?',0)
+A=df1['age'].shape[0]
+D=np.zeros(A)
+for i in range(len(D)):
+    if df1['age'][i]=='?':
+        D[i]=int(0)
+    else:
+        D[i]=int(df1['age'][i])
+
+K=math.floor(np.sum(D)/A)
+for i in range(len(D)):
+    if df1['age'][i]=='?':
+        D[i]=K
+        
+df1['age']=D
+
+A=df1['diagnosis'].shape[0]
+D=np.zeros(A)
+for i in range(len(D)):
+    if df1['diagnosis'][i]==0:
+        D[i]=0
+    else:
+        D[i]=1
+        
+df1['diagnosis']=D
+
+df1.to_csv("jsrt_metadata_procecced.csv")

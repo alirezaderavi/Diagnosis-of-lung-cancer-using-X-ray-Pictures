@@ -1,0 +1,57 @@
+import cv2
+import numpy as np
+import os
+import pandas as pd
+from sklearn import neighbors
+from sklearn.model_selection import train_test_split
+
+df1 = pd.read_csv('jsrt_metadata_procecced.csv', delimiter=',',na_values="")
+
+# Load the images
+images = []
+labels = []
+
+index=0
+dir_path = "/Users/user/Desktop/ارشد/پایان نامه/حسینپور/پایان نامه/Data/images/images/"
+for filename in os.listdir(dir_path):
+    if filename.endswith(".png"):
+        image = cv2.imread(os.path.join(dir_path, filename), 0)
+        image = cv2.resize(image, (256, 256))
+        
+        # Enhance the image
+        enhanced_image = cv2.equalizeHist(image)
+        
+        # Remove noise
+        denoised_image = cv2.fastNlMeansDenoising(enhanced_image, None, 10, 7, 21)
+        
+        # Threshold the image
+        _, thresholded_image = cv2.threshold(denoised_image, 128, 255, cv2.THRESH_BINARY)
+        
+        # Apply morphological operations
+        morph_kernel = np.ones((3,3), np.uint8)
+        morph_image = cv2.morphologyEx(thresholded_image, cv2.MORPH_CLOSE, morph_kernel)
+        
+        # Extract features using area based thresholding
+        contours, _ = cv2.findContours(morph_img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        areas = [cv2.contourArea(c) for c in contours]
+        features = np.array(areas)
+        
+        # Add the features to the list of features and labels
+        images.append(features)
+        labels.append(df1['diagnosis'][index])
+        index = index + 1
+
+# Convert the lists to numpy arrays
+images = np.array(images)
+labels = np.array(labels)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(images, labels, test_size=0.2)
+
+# Train a KNN classifier
+knn = neighbors.KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+
+# Evaluate the model on the test data
+accuracy = knn.score(X_test, y_test)
+print("Accuracy: {:.2f}%".format(accuracy * 100))

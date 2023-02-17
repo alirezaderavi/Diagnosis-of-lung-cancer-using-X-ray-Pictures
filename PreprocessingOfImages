@@ -12,7 +12,7 @@ images = []
 labels = []
 
 index=0
-dir_path = "/Users/user/Desktop/ارشد/پایان نامه/حسینپور/پایان نامه/Data/images/images/"
+dir_path = "/images/images/"
 for filename in os.listdir(dir_path):
     if filename.endswith(".png"):
         image = cv2.imread(os.path.join(dir_path, filename), 0)

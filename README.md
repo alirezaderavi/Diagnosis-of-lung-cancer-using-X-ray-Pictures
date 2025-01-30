@@ -19,11 +19,26 @@ important to note that the previous dataset had shadows present, whereas we used
 shadows. This improvement had a favorable effect on a number of metrics, including Sensitivity,
 Precision, Specificity, and F1 score, which will be covered in more depth later.
 ## Dataset
+A publicly accessible dataset collected from the Japanese Society of Radiological Technology
+(JSRT) was used in the study (Japanese Society of Radiological Technology 2023). In the 247
+frontal chest X-ray images that make up the JSRT dataset, 154 images (100 malignant cases and
+54 benign cases) are found to have lung nodules, while the remaining 93 images serve as negative
+instances without lung nodules. The dataset's images all have a resolution of 2048 and 2048 pixels,
+which is noteworthy(Kaggle 2023). However, a modified dataset is known as BSE JSRT was
+produced in light of the negative effects that bone shadows had on the accuracy of the results. The
+bone shadows were excluded from this derivative dataset, which was obtained from the original
+JSRT dataset. The experiments and analysis for this paper were done using the BSE JSRT dataset.
+
+"Link Dataset:" https://www.kaggle.com/datasets/hmchuong/xray-bone-shadow-supression/
 
 ## Methodology
 
 ## Results
-
+- Accuracy: 72.78%
+- Sensitivity: 60.41%
+- Precision: 81.43%
+- Specificity: 85.12%
+- F1_score: 69.16%
 
 
 ## Installation
